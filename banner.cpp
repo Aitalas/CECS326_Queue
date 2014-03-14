@@ -35,10 +35,21 @@ int main() {
 
 	cout << getpid() << ": Waiting for divisible numbers..." << endl;
 
-	//check top of queue
-	while (c1) {
-		//get top of queue
+
+	//while catchers are still running
+	while (c1) {		
+/*		msgrcv(qid, (struct msgbuf *)&msg, size, -100, 0); 
+		continue;
+
+		msgrcv(qid, (struct msgbuf *)&msg, size, 101, 0); 
+		cout << getpid() << ": " << msg.greeting << endl;
+		continue;
+
+		msgrcv(qid, (struct msgbuf *)&msg, size, 102, 0); 
+		c1 = false;
+*/
 		msgrcv(qid, (struct msgbuf *)&msg, size, 0, 0); 
+		cout << getpid() << ": Got something." << endl;
 
 		//check if fake
 		if (msg.mtype != 101 || msg.mtype != 102) {
@@ -53,7 +64,7 @@ int main() {
 		//check if catcher end
 		else if (msg.mtype == 102) {
 			c1 = false;
-		} 
+		}
 	}
 
 	cout << getpid() << ": Banner ending." << endl;

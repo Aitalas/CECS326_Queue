@@ -38,41 +38,35 @@ int main() {
 
 	cout << getpid() << ": Generating divisible numbers..." << endl;
 
-
+	//prepare message
 	msg.mtype = 101;
-	strcpy(msg.greeting, "Hello world!");
-	msgsnd();
-	msgsnd(qid, (struct msgbuf *)&msg, size, 0); 
-	cout << getpid() << ": Sent test message!" << endl;
+	strcpy(msg.greeting, "Number is divisible!");
 
 	//check if divisible
 	//while random number is greater than 100
 	while (randNum > 100) {
 		//if randNum is divisible by the prime number
 		if (randNum % PRIME_NUM == 0) {
-			cout << getpid() << ": Got a number!" << endl;
-
-			//set mtype
-			msg.mtype = 101;
-			
-			//set greeting
-			strcpy(msg.greeting, "Number is divisible!");
-
-			//send message
+			//send message and notify user
 			msgsnd(qid, (struct msgbuf *)&msg, size, 0); 
-
-			//notify user
-			cout << getpid() << ": Notification sent." << endl;
+			cout << getpid() 
+				<< ": Got a number! Notification sent." 
+				<< endl;
 		}
-		cout << getpid() << ": No good number..." << endl;
+
+		randNum = randgen(qid);//generate new randNum
 	}
+
+
+	cout << getpid() << ": Done generating numbers. Ending..." << endl;
+
 
 	//send terminating message
 	msg.mtype = 102;
-	strcpy(msg.greeting, "Catcher 1 ending.");
+	strcpy(msg.greeting, "Catcher 1 has ended.");
 	msgsnd(qid, (struct msgbuf *)&msg, size, 0); 
 	
-	cout << getpid() << ": Catcher 1 ending." << endl;
+	cout << getpid() << ": Catcher 1 end." << endl;
 	exit(0);
 }
 
