@@ -48,9 +48,12 @@ int main() {
 		msgrcv(qid, (struct msgbuf *)&msg, size, 102, 0); 
 		c1 = false;
 */
-		msgrcv(qid, (struct msgbuf *)&msg, size, 0, 0); 
-		cout << getpid() << ": Got something." << endl;
 
+		//***** BANNER GETS HUNG UP HERE *****
+		msgrcv(qid, (struct msgbuf *)&msg, size, 0, 0);
+		//************************************		
+
+		//It skips these checks and keeps looping :(
 		//check if fake
 		if (msg.mtype != 101 || msg.mtype != 102) {
 			continue;
