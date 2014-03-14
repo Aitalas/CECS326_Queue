@@ -1,6 +1,7 @@
 /* 
 Commands to run in terminal:
 g++ banner.cpp -o b.out
+./b.out
 */
 
 #include <sys/types.h>
@@ -54,6 +55,8 @@ int main() {
 			c1 = false;
 		} 
 	}
+
+	cout << getpid() << ": Banner ending." << endl;
 
 	// now safe to delete message queue
 	msgctl (qid, IPC_RMID, NULL);

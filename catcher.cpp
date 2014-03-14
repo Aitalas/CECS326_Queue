@@ -1,6 +1,7 @@
 /* 
 Commands to run in terminal:
 g++ randgen.o catcher.cpp -o c1.out
+./c1.out
 */
 
 #include <sys/types.h>
@@ -36,6 +37,13 @@ int main() {
 	int randNum = randgen(qid);
 
 	cout << getpid() << ": Generating divisible numbers..." << endl;
+
+
+	msg.mtype = 101;
+	strcpy(msg.greeting, "Hello world!");
+	msgsnd();
+	msgsnd(qid, (struct msgbuf *)&msg, size, 0); 
+	cout << getpid() << ": Sent test message!" << endl;
 
 	//check if divisible
 	//while random number is greater than 100
