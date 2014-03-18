@@ -36,7 +36,7 @@ int main() {
 	int size = sizeof(msg)-sizeof(long);
 
 	//initialize prime number
-	int PRIME_NUM = 3;
+	int PRIME_NUM = 5;
 
 	//initialize random seed
 	srand(time(NULL));
@@ -47,12 +47,12 @@ int main() {
 	string temp_str = strs.str();
 	const char* numChar = temp_str.c_str();
 
-	cout << getpid() << ": Beginning Catcher 1..." << endl;
+	cout << getpid() << ": Beginning Catcher 2..." << endl;
 
 	while (randomNum > 100) {
 		if (randomNum % PRIME_NUM == 0) {
 			//reset greeting
-			strcpy(msg.greeting, "C1: PN = 3, RN = ");
+			strcpy(msg.greeting, "C2: PN = 5, RN = ");
 
 			//convert randomNum to char
 			strs.str("");//reset stringstream
@@ -63,7 +63,7 @@ int main() {
 			strcat(msg.greeting, numChar);//add to greeting
 
 			//send message
-			msg.mtype = 101;
+			msg.mtype = 102;
 			msgsnd(qid, (struct msgbuf *)&msg, size, 0); 
 			cout << getpid() << ": Sent message." << endl;
 		}
@@ -75,11 +75,11 @@ int main() {
 
 
 	//send terminating message
-	msg.mtype = 91;
-	strcpy(msg.greeting, "Catcher 1 has ended.");
+	msg.mtype = 92;
+	strcpy(msg.greeting, "Catcher 2 has ended.");
 	msgsnd(qid, (struct msgbuf *)&msg, size, 0); 
 	cout << getpid() << ": Sent final message." << endl;
-	cout << getpid() << ": Catcher 1 end." << endl;
+	cout << getpid() << ": Catcher 2 end." << endl;
 
 	exit(0);
 }

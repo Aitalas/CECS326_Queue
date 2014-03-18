@@ -37,26 +37,33 @@ int main() {
 	buf msg;
 	int size = sizeof(msg)-sizeof(long);
 
+	//booleans to represent running catchers
 	bool c1 = true;
+	bool c2 = true;
+	bool c3 = true;
 
-	cout << getpid() << ": Waiting for messages..." << endl;
+	cout << getpid() << ": Beginning Banner. Waiting for messages..." << endl;
 
-	while (c1) {//while c1 is still running
+	while (c1 || c2 || c3) {//while catchers are still running
 		
+		//get top of queue
 		msgrcv(qid, (struct msgbuf *)&msg, size, 0, 0);
 
 		//if message is terminating
-		if (msg.mtype == 102) {
-			cout << getpid() << ": " << msg.greeting << endl;	
-			//stop loop		
+		if (msg.mtype == 91) {
+			cout << getpid() << ": " << msg.greeting << endl;		
 			c1 = false;
-		} 
+		} else if (msg.mtype == 92) {
+			cout << getpid() << ": " << msg.greeting << endl;	
+			c2 = false;
+		} else if (msg.mtype == 93) {
+			cout << getpid() << ": " << msg.greeting << endl;	
+			c3 = false;
+		}
 		//if message is real
-		else if (msg.mtype == 101) {
-			//print message
+		else if (msg.mtype == 101 || msg.mtype == 102 || msg.mtype == 103) {
 			cout << getpid() << ": " << msg.greeting << endl;
-		} 
-
+		}
 	}
 
 	cout << getpid() << ": Banner end." << endl;	
