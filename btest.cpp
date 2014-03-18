@@ -39,21 +39,23 @@ int main() {
 
 	bool c1 = true;
 
-	cout << getpid() << ": Waiting for message..." << endl;
+	cout << getpid() << ": Waiting for messages..." << endl;
 
 	while (c1) {//while c1 is still running
 		
 		msgrcv(qid, (struct msgbuf *)&msg, size, 0, 0);
 
-		//if message is not mtype 101
-		if (msg.mtype != 101) {
+		//if message is terminating
+		if (msg.mtype == 102) {
 			cout << getpid() << ": " << msg.greeting << endl;	
 			//stop loop		
 			c1 = false;
-		} else {
+		} 
+		//if message is real
+		else if (msg.mtype == 101) {
 			//print message
 			cout << getpid() << ": " << msg.greeting << endl;
-		}
+		} 
 
 	}
 

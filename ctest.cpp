@@ -22,7 +22,7 @@ using namespace std;
 
 int main() {
 
-	//init queue
+	//init queue id from banner
 	int qid = msgget(ftok(".",'u'), 0);
 
 	// declare my message buffer
@@ -33,21 +33,27 @@ int main() {
 	buf msg;
 	int size = sizeof(msg)-sizeof(long);
 
+	//initialize prime number
+	int PRIME_NUM = 3;
+
 	//initialize random seed
 	srand(time(NULL));
-	int randomNum = rand() % 200 + 50;//number range 50 - 200
-	//int randomNum = randgen(qid);
+	//int randomNum = rand() % 200 + 50;//number range 50 - 200
+	int randomNum = randgen(qid);
+
 
 	while (randomNum > 100) {
-		//send message
-		msg.mtype = 101;
-		strcpy(msg.greeting, "Did you get this?");
-		msgsnd(qid, (struct msgbuf *)&msg, size, 0); 
-		cout << getpid() << ": Sent message." << endl;
-
+		if (randomNum % PRIME_NUM == 0) {
+			//send message
+			msg.mtype = 101;
+			strcpy(msg.greeting, "Catcher 1: Did you get this?");
+			msgsnd(qid, (struct msgbuf *)&msg, size, 0); 
+			cout << getpid() << ": Sent message." << endl;
+		}
+	
 		//generate new randomNum
-		//randomNum = randgen(qid);
-		randomNum = rand() % 200 + 50;//number range 50 - 200
+		randomNum = randgen(qid);
+		//randomNum = rand() % 200 + 50;//number range 50 - 200
 	}
 
 
