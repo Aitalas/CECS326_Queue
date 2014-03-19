@@ -1,8 +1,11 @@
-/* 
-Commands to run in terminal:
-g++ randgen.o catcher.cpp -o c1.out
-./c1.out
-*/
+//Cynthia Nguyen
+//CECS326
+//Programming: Message Queue
+//ctest2.cpp
+//Description: This is an event catcher program that sends a message to the 
+//	banner's queue if certain conditions are met. Once the conditions are
+//	no longer true, the event catcher stops by sending a terminating 
+//	message to the banner.
 
 #include <sys/types.h>
 #include <sys/ipc.h>
@@ -13,10 +16,6 @@ g++ randgen.o catcher.cpp -o c1.out
 #include <sys/wait.h>
 #include <cstdlib>
 #include "randgen.h"
-
-#include <stdio.h>      /* printf, scanf, puts, NULL */
-#include <stdlib.h>     /* srand, rand */
-#include <time.h>       /* time */
 #include <sstream>
 #include <string.h>
 	
@@ -36,11 +35,9 @@ int main() {
 	int size = sizeof(msg)-sizeof(long);
 
 	//initialize prime number
-	int PRIME_NUM = 5;
+	int primeNum = 5;
 
-	//initialize random seed
-	srand(time(NULL));
-	//int randomNum = rand() % 200 + 50;//number range 50 - 200
+	//initialize random number
 	int randomNum = randgen(qid);
 
 	stringstream strs;
@@ -50,9 +47,9 @@ int main() {
 	cout << getpid() << ": Beginning Catcher 2..." << endl;
 
 	while (randomNum > 100) {
-		if (randomNum % PRIME_NUM == 0) {
+		if (randomNum % primeNum == 0) {
 			//reset greeting
-			strcpy(msg.greeting, "C2: PN = 5, RN = ");
+			strcpy(msg.greeting, "");
 
 			//convert randomNum to char
 			strs.str("");//reset stringstream
@@ -60,17 +57,19 @@ int main() {
 			strs << randomNum;//convert number
 			temp_str = strs.str();//convert to string
 			numChar = temp_str.c_str();//convert to char
-			strcat(msg.greeting, numChar);//add to greeting
+			strcpy(msg.greeting, numChar);//copy to greeting
+
+			//concatenate rest of the message
+			strcat(msg.greeting, " is divisible by 5.");
 
 			//send message
-			msg.mtype = 102;
+			msg.mtype = 2;
 			msgsnd(qid, (struct msgbuf *)&msg, size, 0); 
 			cout << getpid() << ": Sent message." << endl;
 		}
 	
 		//generate new randomNum
 		randomNum = randgen(qid);
-		//randomNum = rand() % 200 + 50;//number range 50 - 200
 	}
 
 
